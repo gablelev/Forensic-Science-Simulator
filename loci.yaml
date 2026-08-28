@@ -1,0 +1,68 @@
+#possible alleles for each loci
+
+loci:
+
+  D8S1179:
+    min: 8
+    max: 18
+
+  D21S11:
+    min: 24
+    max: 34
+
+  D7S820:
+    min: 6
+    max: 14
+
+  CSF1PO:
+    min: 7
+    max: 15
+
+  D3S1358:
+    min: 11
+    max: 20
+
+  TH01:
+    min: 5
+    max: 13
+
+  D13S317:
+    min: 8
+    max: 15
+
+  D16S539:
+    min: 8
+    max: 15
+
+  D2S1338:
+    min: 15
+    max: 26
+
+  D19S433:
+    min: 9
+    max: 17
+
+  vWA:
+    min: 11
+    max: 19
+
+  TPOX:
+    min: 6
+    max: 13
+
+  D18S51:
+    min: 10
+    max: 28
+
+  D5S818:
+    min: 7
+    max: 15
+
+  FGA:
+    min: 18
+    max: 30
+
+  Amelogenin:
+    values:
+      - "X"
+      - "Y"
