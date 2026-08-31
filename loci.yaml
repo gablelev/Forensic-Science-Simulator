@@ -1,30 +1,64 @@
+#20 locus required for CODIS (updated 2017)
+locus_names:
+  - CSF1PO
+  - FGA
+  - THO1
+  - TPOX
+  - VWA
+  - D3S1358
+  - D5S818
+  - D7S820
+  - D8S1179
+  - D13S317
+  - D16S539
+  - D18S51
+  - D21S11
+  - D1S1656
+  - D2S441
+  - D2S1338
+  - D10S1248
+  - D12S391
+  - D19S433
+  - D22S1045
+
 #possible alleles for each loci
-
 loci:
-
-  D8S1179:
-    min: 8
-    max: 18
-
-  D21S11:
-    min: 24
-    max: 34
-
-  D7S820:
-    min: 6
-    max: 14
 
   CSF1PO:
     min: 7
     max: 15
 
+  FGA:
+    min: 18
+    max: 30
+
+  THO1:
+    min: 5
+    max: 13
+
+  TPOX:
+    min: 6
+    max: 13
+
+  VWA:
+    min: 11
+    max: 19
+
   D3S1358:
     min: 11
     max: 20
 
-  TH01:
-    min: 5
-    max: 13
+  D5S818:
+    min: 7
+    max: 15
+
+  D7S820:
+    min: 6
+    max: 14
+
+  D8S1179:
+    min: 8
+    max: 18
 
   D13S317:
     min: 8
@@ -34,33 +68,41 @@ loci:
     min: 8
     max: 15
 
+  D18S51:
+    min: 10
+    max: 28
+
+  D21S11:
+    min: 24
+    max: 34
+
+  D1S1656:
+    min: 8.3
+    max: 19.3
+
+  D2S441:
+    min: 9
+    max: 16.2
+
   D2S1338:
     min: 15
     max: 26
+
+  D10S1248:
+    min: 8
+    max: 18
+
+  D12S391:
+    min: 14
+    max: 27
 
   D19S433:
     min: 9
     max: 17
 
-  vWA:
-    min: 11
-    max: 19
-
-  TPOX:
-    min: 6
-    max: 13
-
-  D18S51:
-    min: 10
-    max: 28
-
-  D5S818:
-    min: 7
-    max: 15
-
-  FGA:
-    min: 18
-    max: 30
+  D22S1045:
+    min: 8
+    max: 18
 
   Amelogenin:
     values:
