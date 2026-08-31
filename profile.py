@@ -30,12 +30,20 @@ class person_profile:
                     loci_data = yaml.safe_load(file)
                 min_val = loci_data["loci"][locus]["min"]
                 max_val = loci_data["loci"][locus]["max"]
-                dna_profile[locus] = [f"{random.uniform(min_val, max_val):.0f}", f"{random.uniform(min_val, max_val):.0f}"]
+                allel1 = int(round(random.uniform(min_val, max_val), 0))
+                allel2 = int(round(random.uniform(min_val, max_val), 0))
+                dna_profile[locus] = [max(allel1, allel2), min(allel1, allel2)]
         self.dna_profile = dna_profile
 
-    def edit_locus(self, locus: str, alleles: list[str]):
+    def edit_locus(self, locus: str, alleles: list[float | str]):
         if locus in self.dna_profile:
-            self.dna_profile[locus] = alleles
+            allel1, allel2 = alleles
+            if locus == "Amelogenin":
+                if set(alleles) != {"X", "Y"} and set(alleles) != {"X"}:
+                    raise ValueError("Invalid alleles for Amelogenin locus. Must be ['X', 'Y'] or ['X'].")
+            #organize alleles in descending order for consistency
+            ordered_alleles = [max(allel1, allel2), min(allel1, allel2)]
+            self.dna_profile[locus] = ordered_alleles
         else:
             raise ValueError(f"Locus '{locus}' not found in the profile.")
 
