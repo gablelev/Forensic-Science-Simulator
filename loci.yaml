@@ -23,87 +23,1351 @@ locus_names:
   - Amelogenin
 
 #possible alleles for each loci
+#based on the NIST STRBase database (https://strider.online/frequencies)
 loci:
-
   CSF1PO:
-    min: 7
-    max: 15
+    alleles:
+      "5":
+        frequency: 0.0000390747
+        sequences: []
+      "6":
+        frequency: 0.000781494
+        sequences: []
+      "7":
+        frequency: 0.00789309
+        sequences: []
+      "8":
+        frequency: 0.00722882
+        sequences: []
+      "9":
+        frequency: 0.0294233
+        sequences: []
+      "9.3":
+        frequency: 0.0000390747
+        sequences: []
+      "10":
+        frequency: 0.244842
+        sequences: []
+      "10.3":
+        frequency: 0.0000390747
+        sequences: []
+      "11":
+        frequency: 0.297554
+        sequences: []
+      "11.1":
+        frequency: 0.0000390747
+        sequences: []
+      "12":
+        frequency: 0.336707
+        sequences: []
+      "13":
+        frequency: 0.0638481
+        sequences: []
+      "14":
+        frequency: 0.0103157
+        sequences: []
+      "15":
+        frequency: 0.00121132
+        sequences: []
+      "16":
+        frequency: 0.0000390747
+        sequences: []
 
   FGA:
-    min: 18
-    max: 30
+    alleles:
+      "13":
+        frequency: 0.000114449
+        sequences: []
+      "15":
+        frequency: 0.0000572246
+        sequences: []
+      "16":
+        frequency: 0.000972818
+        sequences: []
+      "16.1":
+        frequency: 0.000171674
+        sequences: []
+      "17":
+        frequency: 0.00114449
+        sequences: []
+      "17.2":
+        frequency: 0.0000572246
+        sequences: []
+      "18":
+        frequency: 0.014392
+        sequences: []
+      "18.2":
+        frequency: 0.000629471
+        sequences: []
+      "19":
+        frequency: 0.0690415
+        sequences: []
+      "19.1":
+        frequency: 0.0000572246
+        sequences: []
+      "19.2":
+        frequency: 0.000801144
+        sequences: []
+      "20":
+        frequency: 0.110157
+        sequences: []
+      "20.2":
+        frequency: 0.000715308
+        sequences: []
+      "21":
+        frequency: 0.159685
+        sequences: []
+      "21.2":
+        frequency: 0.00543634
+        sequences: []
+      "21.3":
+        frequency: 0.0000286123
+        sequences: []
+      "22":
+        frequency: 0.182833
+        sequences: []
+      "22.1":
+        frequency: 0.0000286123
+        sequences: []
+      "22.2":
+        frequency: 0.00924177
+        sequences: []
+      "22.3":
+        frequency: 0.000114449
+        sequences: []
+      "23":
+        frequency: 0.153877
+        sequences: []
+      "23.2":
+        frequency: 0.00566524
+        sequences: []
+      "23.3":
+        frequency: 0.0000572246
+        sequences: []
+      "24":
+        frequency: 0.138484
+        sequences: []
+      "24.1":
+        frequency: 0.0000286123
+        sequences: []
+      "24.2":
+        frequency: 0.00429185
+        sequences: []
+      "24.3":
+        frequency: 0.0000572246
+        sequences: []
+      "25":
+        frequency: 0.0879542
+        sequences: []
+      "25.2":
+        frequency: 0.00200286
+        sequences: []
+      "25.3":
+        frequency: 0.0000286123
+        sequences: []
+      "26":
+        frequency: 0.0361373
+        sequences: []
+      "26.1":
+        frequency: 0.0000286123
+        sequences: []
+      "26.2":
+        frequency: 0.000486409
+        sequences: []
+      "27":
+        frequency: 0.00941345
+        sequences: []
+      "27.2":
+        frequency: 0.000114449
+        sequences: []
+      "28":
+        frequency: 0.00306152
+        sequences: []
+      "28.2":
+        frequency: 0.0000286123
+        sequences: []
+      "29":
+        frequency: 0.00105866
+        sequences: []
+      "29.2":
+        frequency: 0.0000286123
+        sequences: []
+      "30":
+        frequency: 0.000343348
+        sequences: []
+      "30.2":
+        frequency: 0.000114449
+        sequences: []
+      "31":
+        frequency: 0.0000858369
+        sequences: []
+      "31.1":
+        frequency: 0.000114449
+        sequences: []
+      "31.2":
+        frequency: 0.000228898
+        sequences: []
+      "32.1":
+        frequency: 0.0000286123
+        sequences: []
+      "33":
+        frequency: 0.0000286123
+        sequences: []
+      "33.2":
+        frequency: 0.0000286123
+        sequences: []
+      "40.2":
+        frequency: 0.0000286123
+        sequences: []
+      "41.2":
+        frequency: 0.0000286123
+        sequences: []
+      "42.2":
+        frequency: 0.0000572246
+        sequences: []
+      "43.2":
+        frequency: 0.0000858369
+        sequences: []
+      "44.2":
+        frequency: 0.0000572246
+        sequences: []
+      "45.2":
+        frequency: 0.000228898
+        sequences: []
+      "46.2":
+        frequency: 0.0000286123
+        sequences: []
+      "49.2":
+        frequency: 0.0000286123
+        sequences: []
 
-  THO1:
-    min: 5
-    max: 13
+  TH01:
+    alleles:
+      "4":
+        frequency: 0.0000286074
+        sequences: []
+      "5":
+        frequency: 0.00145898
+        sequences: []
+      "6":
+        frequency: 0.20131
+        sequences: []
+      "7":
+        frequency: 0.215213
+        sequences: []
+      "7.3":
+        frequency: 0.0000286074
+        sequences: []
+      "8":
+        frequency: 0.114229
+        sequences: []
+      "8.3":
+        frequency: 0.000343289
+        sequences: []
+      "9":
+        frequency: 0.218675
+        sequences: []
+      "9.3":
+        frequency: 0.223967
+        sequences: []
+      "10":
+        frequency: 0.0240588
+        sequences: []
+      "10.3":
+        frequency: 0.0000286074
+        sequences: []
+      "11":
+        frequency: 0.000514933
+        sequences: []
+      "12":
+        frequency: 0.00011443
+        sequences: []
+      "13.3":
+        frequency: 0.0000286074
+        sequences: []
 
   TPOX:
-    min: 6
-    max: 13
+    alleles:
+      "5":
+        frequency: 0.000156299
+        sequences: []
+      "6":
+        frequency: 0.00707252
+        sequences: []
+      "7":
+        frequency: 0.00218818
+        sequences: []
+      "7.3":
+        frequency: 0.0000390747
+        sequences: []
+      "8":
+        frequency: 0.522859
+        sequences: []
+      "9":
+        frequency: 0.124179
+        sequences: []
+      "10":
+        frequency: 0.0579869
+        sequences: []
+      "11":
+        frequency: 0.254142
+        sequences: []
+      "12":
+        frequency: 0.0302438
+        sequences: []
+      "13":
+        frequency: 0.000898718
+        sequences: []
+      "14":
+        frequency: 0.000195374
+        sequences: []
+      "15":
+        frequency: 0.0000390747
+        sequences: []
 
   VWA:
-    min: 11
-    max: 19
+    alleles:
+      "10":
+        frequency: 0.0000572344
+        sequences: []
+      "11":
+        frequency: 0.000400641
+        sequences: []
+      "12":
+        frequency: 0.000343407
+        sequences: []
+      "13":
+        frequency: 0.0024897
+        sequences: []
+      "14":
+        frequency: 0.13513
+        sequences: []
+      "15":
+        frequency: 0.0964114
+        sequences: []
+      "16":
+        frequency: 0.198146
+        sequences: []
+      "17":
+        frequency: 0.262019
+        sequences: []
+      "18":
+        frequency: 0.200006
+        sequences: []
+      "18.2":
+        frequency: 0.0000286172
+        sequences: []
+      "19":
+        frequency: 0.0873111
+        sequences: []
+      "20":
+        frequency: 0.0160543
+        sequences: []
+      "21":
+        frequency: 0.0014881
+        sequences: []
+      "22":
+        frequency: 0.000114469
+        sequences: []
 
   D3S1358:
-    min: 11
-    max: 20
+    alleles:
+      "9":
+        frequency: 0.000143045
+        sequences: []
+      "10":
+        frequency: 0.0000858271
+        sequences: []
+      "11":
+        frequency: 0.000972707
+        sequences: []
+      "12":
+        frequency: 0.000743835
+        sequences: []
+      "13":
+        frequency: 0.00357613
+        sequences: []
+      "14":
+        frequency: 0.0901184
+        sequences: []
+      "15":
+        frequency: 0.26964
+        sequences: []
+      "15.2":
+        frequency: 0.0000572181
+        sequences: []
+      "16":
+        frequency: 0.279253
+        sequences: []
+      "16.2":
+        frequency: 0.0000572181
+        sequences: []
+      "17":
+        frequency: 0.219918
+        sequences: []
+      "17.1":
+        frequency: 0.000028609
+        sequences: []
+      "17.2":
+        frequency: 0.0000858271
+        sequences: []
+      "18":
+        frequency: 0.124449
+        sequences: []
+      "19":
+        frequency: 0.0100704
+        sequences: []
+      "20":
+        frequency: 0.000801053
+        sequences: []
 
   D5S818:
-    min: 7
-    max: 15
+    alleles:
+      "7":
+        frequency: 0.0112926
+        sequences: []
+      "8":
+        frequency: 0.00922163
+        sequences: []
+      "9":
+        frequency: 0.043959
+        sequences: []
+      "10":
+        frequency: 0.118904
+        sequences: []
+      "11":
+        frequency: 0.304939
+        sequences: []
+      "12":
+        frequency: 0.324867
+        sequences: []
+      "12.1":
+        frequency: 0.0000781494
+        sequences: []
+      "13":
+        frequency: 0.173296
+        sequences: []
+      "14":
+        frequency: 0.0114489
+        sequences: []
+      "15":
+        frequency: 0.00179744
+        sequences: []
+      "16":
+        frequency: 0.000195374
+        sequences: []
 
   D7S820:
-    min: 6
-    max: 14
+    alleles:
+      "6":
+        frequency: 0.000195374
+        sequences: []
+      "6.3":
+        frequency: 0.0000390747
+        sequences: []
+      "7":
+        frequency: 0.0138324
+        sequences: []
+      "7.1":
+        frequency: 0.0000390747
+        sequences: []
+      "7.3":
+        frequency: 0.0000390747
+        sequences: []
+      "8":
+        frequency: 0.172046
+        sequences: []
+      "9":
+        frequency: 0.12246
+        sequences: []
+      "9.1":
+        frequency: 0.00140669
+        sequences: []
+      "9.2":
+        frequency: 0.0000390747
+        sequences: []
+      "9.3":
+        frequency: 0.0000390747
+        sequences: []
+      "10":
+        frequency: 0.247851
+        sequences: []
+      "10.1":
+        frequency: 0.000234448
+        sequences: []
+      "10.3":
+        frequency: 0.000117224
+        sequences: []
+      "11":
+        frequency: 0.253673
+        sequences: []
+      "11.1":
+        frequency: 0.000195374
+        sequences: []
+      "11.3":
+        frequency: 0.0000781494
+        sequences: []
+      "12":
+        frequency: 0.152313
+        sequences: []
+      "12.3":
+        frequency: 0.0000390747
+        sequences: []
+      "13":
+        frequency: 0.0299703
+        sequences: []
+      "14":
+        frequency: 0.00515786
+        sequences: []
+      "15":
+        frequency: 0.000234448
+        sequences: []
 
   D8S1179:
-    min: 8
-    max: 18
+    alleles:
+      "6":
+        frequency: 0.0000286074
+        sequences: []
+      "7":
+        frequency: 0.0000286074
+        sequences: []
+      "8":
+        frequency: 0.010785
+        sequences: []
+      "9":
+        frequency: 0.00906854
+        sequences: []
+      "10":
+        frequency: 0.0899416
+        sequences: []
+      "11":
+        frequency: 0.088311
+        sequences: []
+      "12":
+        frequency: 0.135141
+        sequences: []
+      "12.1":
+        frequency: 0.0000286074
+        sequences: []
+      "13":
+        frequency: 0.273401
+        sequences: []
+      "14":
+        frequency: 0.208004
+        sequences: []
+      "15":
+        frequency: 0.135771
+        sequences: []
+      "15.3":
+        frequency: 0.0000286074
+        sequences: []
+      "16":
+        frequency: 0.0418812
+        sequences: []
+      "17":
+        frequency: 0.0065797
+        sequences: []
+      "17.1":
+        frequency: 0.0000286074
+        sequences: []
+      "18":
+        frequency: 0.000915437
+        sequences: []
+      "19":
+        frequency: 0.0000572148
+        sequences: []
 
   D13S317:
-    min: 8
-    max: 15
+    alleles:
+      "6":
+        frequency: 0.000195374
+        sequences: []
+      "7":
+        frequency: 0.00132854
+        sequences: []
+      "8":
+        frequency: 0.17314
+        sequences: []
+      "9":
+        frequency: 0.0892857
+        sequences: []
+      "10":
+        frequency: 0.0802595
+        sequences: []
+      "10.1":
+        frequency: 0.0000781494
+        sequences: []
+      "11":
+        frequency: 0.276805
+        sequences: []
+      "11.3":
+        frequency: 0.0000390747
+        sequences: []
+      "12":
+        frequency: 0.2559
+        sequences: []
+      "13":
+        frequency: 0.0879572
+        sequences: []
+      "14":
+        frequency: 0.0341513
+        sequences: []
+      "15":
+        frequency: 0.000781494
+        sequences: []
+      "16":
+        frequency: 0.0000781494
+        sequences: []
 
   D16S539:
-    min: 8
-    max: 15
+    alleles:
+      "5":
+        frequency: 0.0000286074
+        sequences: []
+      "6":
+        frequency: 0.0000286074
+        sequences: []
+      "7":
+        frequency: 0.0000286074
+        sequences: []
+      "8":
+        frequency: 0.0177938
+        sequences: []
+      "9":
+        frequency: 0.145125
+        sequences: []
+      "10":
+        frequency: 0.0792139
+        sequences: []
+      "11":
+        frequency: 0.301293
+        sequences: []
+      "12":
+        frequency: 0.277349
+        sequences: []
+      "12.1":
+        frequency: 0.0000286074
+        sequences: []
+      "12.2":
+        frequency: 0.0000286074
+        sequences: []
+      "13":
+        frequency: 0.154423
+        sequences: []
+      "13.3":
+        frequency: 0.0000286074
+        sequences: []
+      "14":
+        frequency: 0.0233722
+        sequences: []
+      "15":
+        frequency: 0.00120151
+        sequences: []
+      "16":
+        frequency: 0.0000572148
+        sequences: []
 
   D18S51:
-    min: 10
-    max: 28
+    alleles:
+      "9":
+        frequency: 0.000572213
+        sequences: []
+      "10":
+        frequency: 0.00655184
+        sequences: []
+      "10.2":
+        frequency: 0.000314717
+        sequences: []
+      "11":
+        frequency: 0.0108434
+        sequences: []
+      "12":
+        frequency: 0.114157
+        sequences: []
+      "12.2":
+        frequency: 0.0000572213
+        sequences: []
+      "13":
+        frequency: 0.128891
+        sequences: []
+      "13.2":
+        frequency: 0.000400549
+        sequences: []
+      "14":
+        frequency: 0.162108
+        sequences: []
+      "14.1":
+        frequency: 0.0000286107
+        sequences: []
+      "14.2":
+        frequency: 0.000171664
+        sequences: []
+      "15":
+        frequency: 0.164454
+        sequences: []
+      "15.1":
+        frequency: 0.0000286107
+        sequences: []
+      "15.2":
+        frequency: 0.000629435
+        sequences: []
+      "16":
+        frequency: 0.14457
+        sequences: []
+      "16.2":
+        frequency: 0.000371939
+        sequences: []
+      "16.3":
+        frequency: 0.0000286107
+        sequences: []
+      "17":
+        frequency: 0.104915
+        sequences: []
+      "17.2":
+        frequency: 0.000200275
+        sequences: []
+      "18":
+        frequency: 0.0671778
+        sequences: []
+      "18.2":
+        frequency: 0.0000286107
+        sequences: []
+      "19":
+        frequency: 0.0459773
+        sequences: []
+      "19.2":
+        frequency: 0.0000572213
+        sequences: []
+      "20":
+        frequency: 0.0238327
+        sequences: []
+      "20.1":
+        frequency: 0.0000286107
+        sequences: []
+      "21":
+        frequency: 0.0123598
+        sequences: []
+      "21.2":
+        frequency: 0.0000572213
+        sequences: []
+      "22":
+        frequency: 0.0077821
+        sequences: []
+      "22.1":
+        frequency: 0.0000286107
+        sequences: []
+      "23":
+        frequency: 0.00180247
+        sequences: []
+      "24":
+        frequency: 0.00117304
+        sequences: []
+      "25":
+        frequency: 0.000343328
+        sequences: []
+      "26":
+        frequency: 0.0000572213
+        sequences: []
 
   D21S11:
-    min: 24
-    max: 34
+    alleles:
+      "23.3":
+        frequency: 0.0000572148
+        sequences: []
+      "24.2":
+        frequency: 0.000429111
+        sequences: []
+      "24.3":
+        frequency: 0.000486326
+        sequences: []
+      "25":
+        frequency: 0.000257467
+        sequences: []
+      "25.2":
+        frequency: 0.000257467
+        sequences: []
+      "25.3":
+        frequency: 0.0000572148
+        sequences: []
+      "26":
+        frequency: 0.00168784
+        sequences: []
+      "26.2":
+        frequency: 0.0000572148
+        sequences: []
+      "27":
+        frequency: 0.025575
+        sequences: []
+      "28":
+        frequency: 0.137687
+        sequences: []
+      "28.1":
+        frequency: 0.0000286074
+        sequences: []
+      "28.2":
+        frequency: 0.000400503
+        sequences: []
+      "28.3":
+        frequency: 0.0000286074
+        sequences: []
+      "29":
+        frequency: 0.221335
+        sequences: []
+      "29.2":
+        frequency: 0.00105847
+        sequences: []
+      "29.3":
+        frequency: 0.000228859
+        sequences: []
+      "30":
+        frequency: 0.237441
+        sequences: []
+      "30.1":
+        frequency: 0.0000286074
+        sequences: []
+      "30.2":
+        frequency: 0.0362456
+        sequences: []
+      "30.3":
+        frequency: 0.000257467
+        sequences: []
+      "31":
+        frequency: 0.073378
+        sequences: []
+      "31.1":
+        frequency: 0.0000286074
+        sequences: []
+      "31.2":
+        frequency: 0.0871381
+        sequences: []
+      "31.3":
+        frequency: 0.0000286074
+        sequences: []
+      "32":
+        frequency: 0.0166209
+        sequences: []
+      "32.1":
+        frequency: 0.000171644
+        sequences: []
+      "32.2":
+        frequency: 0.108165
+        sequences: []
+      "33":
+        frequency: 0.00234581
+        sequences: []
+      "33.1":
+        frequency: 0.000343289
+        sequences: []
+      "33.2":
+        frequency: 0.0377045
+        sequences: []
+      "34":
+        frequency: 0.00100126
+        sequences: []
+      "34.1":
+        frequency: 0.000257467
+        sequences: []
+      "34.2":
+        frequency: 0.00429111
+        sequences: []
+      "35":
+        frequency: 0.00274631
+        sequences: []
+      "35.1":
+        frequency: 0.000171644
+        sequences: []
+      "35.2":
+        frequency: 0.000514933
+        sequences: []
+      "36":
+        frequency: 0.00100126
+        sequences: []
+      "36.1":
+        frequency: 0.0000572148
+        sequences: []
+      "37":
+        frequency: 0.000286074
+        sequences: []
+      "37.1":
+        frequency: 0.0000286074
+        sequences: []
+      "37.2":
+        frequency: 0.0000286074
+        sequences: []
+      "38":
+        frequency: 0.0000858222
+        sequences: []
 
   D1S1656:
-    min: 8.3
-    max: 19.3
+    alleles:
+      "8":
+        frequency: 0.00105841
+        sequences: []
+      "9":
+        frequency: 0.000343269
+        sequences: []
+      "10":
+        frequency: 0.00317524
+        sequences: []
+      "11":
+        frequency: 0.0768351
+        sequences: []
+      "12":
+        frequency: 0.101722
+        sequences: []
+      "13":
+        frequency: 0.0780937
+        sequences: []
+      "13.3":
+        frequency: 0.000143029
+        sequences: []
+      "14":
+        frequency: 0.103553
+        sequences: []
+      "14.3":
+        frequency: 0.00317524
+        sequences: []
+      "15":
+        frequency: 0.173122
+        sequences: []
+      "15.2":
+        frequency: 0.0000572115
+        sequences: []
+      "15.3":
+        frequency: 0.0462269
+        sequences: []
+      "16":
+        frequency: 0.146519
+        sequences: []
+      "16.1":
+        frequency: 0.0000858173
+        sequences: []
+      "16.3":
+        frequency: 0.0449969
+        sequences: []
+      "17":
+        frequency: 0.0571257
+        sequences: []
+      "17.1":
+        frequency: 0.00020024
+        sequences: []
+      "17.3":
+        frequency: 0.105469
+        sequences: []
+      "18":
+        frequency: 0.00635048
+        sequences: []
+      "18.3":
+        frequency: 0.0423937
+        sequences: []
+      "19":
+        frequency: 0.00094399
+        sequences: []
+      "19.3":
+        frequency: 0.00792379
+        sequences: []
+      "20":
+        frequency: 0.0000572115
+        sequences: []
+      "20.3":
+        frequency: 0.000429086
+        sequences: []
 
   D2S441:
-    min: 9
-    max: 16.2
+    alleles:
+      "8":
+        frequency: 0.000600721
+        sequences: []
+      "8.1":
+        frequency: 0.0000286058
+        sequences: []
+      "9":
+        frequency: 0.00168774
+        sequences: []
+      "9.1":
+        frequency: 0.00246009
+        sequences: []
+      "10":
+        frequency: 0.184021
+        sequences: []
+      "10.1":
+        frequency: 0.000228846
+        sequences: []
+      "10.3":
+        frequency: 0.0000858173
+        sequences: []
+      "11":
+        frequency: 0.329023
+        sequences: []
+      "11.1":
+        frequency: 0.0000858173
+        sequences: []
+      "11.3":
+        frequency: 0.0789519
+        sequences: []
+      "12":
+        frequency: 0.0752903
+        sequences: []
+      "12.3":
+        frequency: 0.00260312
+        sequences: []
+      "13":
+        frequency: 0.0263459
+        sequences: []
+      "13.3":
+        frequency: 0.000657932
+        sequences: []
+      "14":
+        frequency: 0.257223
+        sequences: []
+      "14.1":
+        frequency: 0.0000572115
+        sequences: []
+      "14.3":
+        frequency: 0.000143029
+        sequences: []
+      "15":
+        frequency: 0.0369872
+        sequences: []
+      "15.3":
+        frequency: 0.0000286058
+        sequences: []
+      "16":
+        frequency: 0.0034613
+        sequences: []
+      "17":
+        frequency: 0.0000286058
+        sequences: []
 
   D2S1338:
-    min: 15
-    max: 26
+    alleles:
+      "12":
+        frequency: 0.0000572246
+        sequences: []
+      "13":
+        frequency: 0.000143062
+        sequences: []
+      "14":
+        frequency: 0.00037196
+        sequences: []
+      "15":
+        frequency: 0.000658083
+        sequences: []
+      "16":
+        frequency: 0.040515
+        sequences: []
+      "17":
+        frequency: 0.18392
+        sequences: []
+      "18":
+        frequency: 0.0816309
+        sequences: []
+      "19":
+        frequency: 0.138484
+        sequences: []
+      "20":
+        frequency: 0.133877
+        sequences: []
+      "21":
+        frequency: 0.0430329
+        sequences: []
+      "22":
+        frequency: 0.0425751
+        sequences: []
+      "23":
+        frequency: 0.120258
+        sequences: []
+      "23.2":
+        frequency: 0.000114449
+        sequences: []
+      "24":
+        frequency: 0.110558
+        sequences: []
+      "25":
+        frequency: 0.0848355
+        sequences: []
+      "26":
+        frequency: 0.0165951
+        sequences: []
+      "27":
+        frequency: 0.0020887
+        sequences: []
+      "28":
+        frequency: 0.000257511
+        sequences: []
+      "29":
+        frequency: 0.0000286123
+        sequences: []
 
   D10S1248:
-    min: 8
-    max: 18
+    alleles:
+      "7":
+        frequency: 0.00011443
+        sequences: []
+      "8":
+        frequency: 0.000171644
+        sequences: []
+      "9":
+        frequency: 0.000944044
+        sequences: []
+      "10":
+        frequency: 0.000572148
+        sequences: []
+      "11":
+        frequency: 0.0065797
+        sequences: []
+      "12":
+        frequency: 0.042482
+        sequences: []
+      "13":
+        frequency: 0.285101
+        sequences: []
+      "14":
+        frequency: 0.29437
+        sequences: []
+      "15":
+        frequency: 0.213783
+        sequences: []
+      "16":
+        frequency: 0.123241
+        sequences: []
+      "17":
+        frequency: 0.0299519
+        sequences: []
+      "18":
+        frequency: 0.00251745
+        sequences: []
+      "19":
+        frequency: 0.000171644
+        sequences: []
 
   D12S391:
-    min: 14
-    max: 27
+    alleles:
+      "13":
+        frequency: 0.0000286058
+        sequences: []
+      "14":
+        frequency: 0.000457692
+        sequences: []
+      "15":
+        frequency: 0.0373877
+        sequences: []
+      "15.1":
+        frequency: 0.0000572115
+        sequences: []
+      "16":
+        frequency: 0.0272041
+        sequences: []
+      "16.3":
+        frequency: 0.0000858173
+        sequences: []
+      "17":
+        frequency: 0.10238
+        sequences: []
+      "17.1":
+        frequency: 0.000286058
+        sequences: []
+      "17.3":
+        frequency: 0.0129298
+        sequences: []
+      "18":
+        frequency: 0.190915
+        sequences: []
+      "18.1":
+        frequency: 0.0000286058
+        sequences: []
+      "18.2":
+        frequency: 0.0000286058
+        sequences: []
+      "18.3":
+        frequency: 0.0141312
+        sequences: []
+      "19":
+        frequency: 0.135505
+        sequences: []
+      "19.1":
+        frequency: 0.000486298
+        sequences: []
+      "19.2":
+        frequency: 0.000143029
+        sequences: []
+      "19.3":
+        frequency: 0.00715144
+        sequences: []
+      "20":
+        frequency: 0.130499
+        sequences: []
+      "20.2":
+        frequency: 0.0000572115
+        sequences: []
+      "20.3":
+        frequency: 0.000972596
+        sequences: []
+      "21":
+        frequency: 0.114023
+        sequences: []
+      "21.3":
+        frequency: 0.000171635
+        sequences: []
+      "22":
+        frequency: 0.100606
+        sequences: []
+      "22.3":
+        frequency: 0.000114423
+        sequences: []
+      "23":
+        frequency: 0.0759197
+        sequences: []
+      "24":
+        frequency: 0.0294353
+        sequences: []
+      "24.2":
+        frequency: 0.0000286058
+        sequences: []
+      "25":
+        frequency: 0.0142171
+        sequences: []
+      "25.2":
+        frequency: 0.0000286058
+        sequences: []
+      "26":
+        frequency: 0.00357572
+        sequences: []
+      "27":
+        frequency: 0.00102981
+        sequences: []
+      "28":
+        frequency: 0.0000858173
+        sequences: []
+      "29":
+        frequency: 0.0000286058
+        sequences: []
 
   D19S433:
-    min: 9
-    max: 17
+    alleles:
+      "6.2":
+        frequency: 0.0000858222
+        sequences: []
+      "7":
+        frequency: 0.00065797
+        sequences: []
+      "8":
+        frequency: 0.000143037
+        sequences: []
+      "9":
+        frequency: 0.0019453
+        sequences: []
+      "10":
+        frequency: 0.00137315
+        sequences: []
+      "10.2":
+        frequency: 0.0000572148
+        sequences: []
+      "11":
+        frequency: 0.0092688
+        sequences: []
+      "11.2":
+        frequency: 0.000286074
+        sequences: []
+      "12":
+        frequency: 0.079786
+        sequences: []
+      "12.1":
+        frequency: 0.000400503
+        sequences: []
+      "12.2":
+        frequency: 0.0050349
+        sequences: []
+      "13":
+        frequency: 0.237441
+        sequences: []
+      "13.2":
+        frequency: 0.0252889
+        sequences: []
+      "14":
+        frequency: 0.310304
+        sequences: []
+      "14.2":
+        frequency: 0.0426536
+        sequences: []
+      "15":
+        frequency: 0.137459
+        sequences: []
+      "15.2":
+        frequency: 0.0746653
+        sequences: []
+      "16":
+        frequency: 0.0406797
+        sequences: []
+      "16.2":
+        frequency: 0.0239158
+        sequences: []
+      "17":
+        frequency: 0.00343289
+        sequences: []
+      "17.2":
+        frequency: 0.00366175
+        sequences: []
+      "18":
+        frequency: 0.000171644
+        sequences: []
+      "18.2":
+        frequency: 0.0011729
+        sequences: []
+      "19.2":
+        frequency: 0.00011443
+        sequences: []
 
   D22S1045:
-    min: 8
-    max: 18
+    alleles:
+      "8":
+        frequency: 0.0000858222
+        sequences: []
+      "10":
+        frequency: 0.00517794
+        sequences: []
+      "11":
+        frequency: 0.146498
+        sequences: []
+      "12":
+        frequency: 0.0125014
+        sequences: []
+      "12.1":
+        frequency: 0.0000286074
+        sequences: []
+      "13":
+        frequency: 0.00537819
+        sequences: []
+      "13.2":
+        frequency: 0.0000286074
+        sequences: []
+      "14":
+        frequency: 0.0484609
+        sequences: []
+      "15":
+        frequency: 0.351785
+        sequences: []
+      "15.2":
+        frequency: 0.0000286074
+        sequences: []
+      "16":
+        frequency: 0.297317
+        sequences: []
+      "17":
+        frequency: 0.119922
+        sequences: []
+      "18":
+        frequency: 0.0113285
+        sequences: []
+      "19":
+        frequency: 0.00123012
+        sequences: []
+      "20":
+        frequency: 0.000200252
+        sequences: []
+      "22":
+        frequency: 0.0000286074
+        sequences: []
 
   Amelogenin:
     values:

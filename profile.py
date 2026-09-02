@@ -14,26 +14,9 @@ class person_profile:
         self.siblings = siblings
         self.children = children
         self.name = name
-        self.sex = sex if sex is not None else self.dna_profile.get("Amelogenin")
+        self.sex = "M" if self.dna_profile.get("Amelogenin") == ["X", "Y"] else "F" if self.dna_profile.get("Amelogenin") == ["X"] else None
         self.age = age
         self.uid = str(uuid.uuid4())
-
-    #for testing purposes, generates a random profile with random alleles for each locus
-    #does not include possibility of microvarient alleles for sake of simplicity
-    def random_profile(self):
-        dna_profile = {locus: None for locus in locus_names}
-        for locus in locus_names:
-            if locus == "Amelogenin":
-                dna_profile[locus] = ["X", random.choice(["X", "Y"])]
-            else:
-                with open("loci.yaml", "r") as file:
-                    loci_data = yaml.safe_load(file)
-                min_val = loci_data["loci"][locus]["min"]
-                max_val = loci_data["loci"][locus]["max"]
-                allel1 = int(round(random.uniform(min_val, max_val), 0))
-                allel2 = int(round(random.uniform(min_val, max_val), 0))
-                dna_profile[locus] = [max(allel1, allel2), min(allel1, allel2)]
-        self.dna_profile = dna_profile
 
     def edit_locus(self, locus: str, alleles: list[float | str]):
         if locus in self.dna_profile:
@@ -69,6 +52,11 @@ class person_profile:
             self.sex = sex
         else:
             raise ValueError("Cannot set sex based on Amelogenin locus. Please ensure the Amelogenin locus is present in the DNA profile.")
+
+    def set_dna_profile(self, dna_profile: dict[str, int | None]):
+        self.dna_profile = dna_profile
+        if "Amelogenin" in dna_profile:
+            self.sex = "M" if dna_profile["Amelogenin"] == ["X", "Y"] else "F" if dna_profile["Amelogenin"] == ["X", "X"] else None
 
     def upload(self):
         if os.path.exists("database.yaml"):
