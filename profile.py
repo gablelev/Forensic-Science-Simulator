@@ -8,7 +8,7 @@ with open("loci.yaml", "r") as file:
 locus_names = loci_data["locus_names"]  
 
 class person_profile:
-    def __init__(self,dna_profile: dict[str, int | None] = {locus: None for locus in locus_names}, parents: list['person_profile'] = [], siblings: list['person_profile'] = [], children: list['person_profile'] = [], name = None, age = None, sex = None):
+    def __init__(self, dna_profile: dict[str, int | None] = {locus: None for locus in locus_names}, parents: list['person_profile'] = [], siblings: list['person_profile'] = [], children: list['person_profile'] = [], name = None, age = None, sex = None):
         self.dna_profile = dna_profile
         self.parents = parents
         self.siblings = siblings
@@ -18,17 +18,26 @@ class person_profile:
         self.age = age
         self.uid = str(uuid.uuid4())
 
-    def edit_locus(self, locus: str, alleles: list[float | str]):
+    def edit_locus(self, locus: str, alleles: list[int]):
+        with open("loci.yaml", "r") as file:
+            loci_data = yaml.safe_load(file)
+        locus_info = loci_data["loci"][locus]
+        #print(locus_info)
+        print(locus_info["alleles"].keys())
         if locus in self.dna_profile:
-            allel1, allel2 = alleles
+            sorted_alleles = sorted(alleles, key=float)
+            allele1, allele2 = (str(allele) for allele in sorted_alleles)
+            print(allele1, allele2)
             if locus == "Amelogenin":
-                if set(alleles) != {"X", "Y"} and set(alleles) != {"X"}:
-                    raise ValueError("Invalid alleles for Amelogenin locus. Must be ['X', 'Y'] or ['X'].")
+                if set(alleles) != {"X", "Y"} and set(alleles) != {"X", "X"}:
+                    raise ValueError("Invalid alleles for Amelogenin locus. Must be ['X', 'Y'] or ['X', 'X'].")
             #organize alleles in descending order for consistency
-            ordered_alleles = [max(allel1, allel2), min(allel1, allel2)]
-            self.dna_profile[locus] = ordered_alleles
+            if allele1 not in locus_info["alleles"].keys():
+                raise ValueError(f"One or both alleles {alleles} are not valid for locus '{locus}'.")
+            self.dna_profile[locus] = [allele1, allele2]
         else:
-            raise ValueError(f"Locus '{locus}' not found in the profile.")
+            #this should not happen
+            raise ValueError(f"MAJOR PROFILE ERROR: Locus '{locus}' not found in the profile.")
 
     def add_siblings(self, siblings: list['person_profile']):
         self.siblings.extend(siblings)
