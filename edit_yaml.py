@@ -2,7 +2,7 @@
 import yaml
 from pathlib import Path
 
-path = Path(r"c:\Users\20cla\OneDrive\Desktop\Forensic Science Simulator\loci.yaml")
+path = Path(r"loci.yaml")
 data = yaml.safe_load(path.read_text(encoding="utf-8"))
 
 for locus in data.get("loci", {}).values():
