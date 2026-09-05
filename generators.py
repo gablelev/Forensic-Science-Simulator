@@ -16,7 +16,9 @@ def random_dna_profile() -> dna_profile:
             #get the frequencies of each allele at the current locus for weighted random selection
             frequencies = [locus_data["alleles"][allele]["frequency"] for allele in alleles]
 
+            #generate random profile for the current locus based on the allele frequencies
             allele1, allele2 = random.choices(alleles, weights=frequencies, k=2)
+            #sort the alleles in ascending order for consistency
             profile[locus] = sorted([allele1, allele2], key=float)
     return dna_profile(profile)
 
@@ -41,10 +43,12 @@ def generate_child_profile(parent1: 'person_profile', parent2: 'person_profile')
                 loci_data = yaml.safe_load(file)
     child_profile = {}
     for locus, locus_data in loci_data["loci"].items():
+        #random choice of gender
         if locus == "Amelogenin":
             child_profile[locus] = ["X", random.choice(["X", "Y"])]
+        # For other loci, inherit one allele from each parent
         else:
-            # For other loci, inherit one allele from each parent
             child_alleles = [random.choice(parent1.dna_profile.get_locus_data(locus)), random.choice(parent2.dna_profile.get_locus_data(locus))]
+            #sort the alleles in ascending order for consistency
             child_profile[locus] = sorted(child_alleles, key=float)
     return dna_profile(child_profile)

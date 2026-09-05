@@ -36,6 +36,7 @@ class dna_profile:
             #this should not happen
             raise ValueError(f"MAJOR PROFILE ERROR: Locus '{locus}' not found in the profile.")
 
+    #updates gender of the dna profile, not the person profile
     def set_gender(self, chromosomes: list[str]):
         if set(chromosomes) != {"X", "Y"} and set(chromosomes) != {"X", "X"}:
             raise ValueError("Invalid chromosomes for Amelogenin locus. Must be ['X', 'Y'] or ['X', 'X'].")
@@ -52,20 +53,37 @@ class person_profile:
         self.age = age
         self.uid = str(uuid.uuid4())
 
-    #def set_gender(self, chromosomes: list[str]):
-    #    if set(chromosomes) != {"X", "Y"} and set(chromosomes) != {"X", "X"}:
-    #        raise ValueError("Invalid chromosomes for Amelogenin locus. Must be ['X', 'Y'] or ['X', 'X'].")
-    #    self.dna_profile["Amelogenin"] = chromosomes
-    #    self.sex = "M" if chromosomes == ["X", "Y"] else "F" if chromosomes == ["X", "X"] else None
+    def add_siblings(self, siblings: 'person_profile' | list['person_profile']):
+        if isinstance(siblings, 'person_profile'):
+            siblings = [siblings]
+        #add the current person's uid to each sibling's siblings list and add each sibling's uid to the current person's siblings list
+        for sibling in siblings:
+            #prevent duplicate entries in the siblings list
+            if self.uid not in sibling.siblings:
+                sibling.siblings.append(self.uid)
+        self.siblings.extend(sibling.uid for sibling in siblings)
 
-    def add_siblings(self, siblings: list['person_profile']):
-        self.siblings.extend(siblings)
+    def add_children(self, children: 'person_profile' | list['person_profile']):
+        if isinstance(children, 'person_profile'):
+            children = [children]
+        #add the current person's uid to each child's parents list and add each child's uid to the current person's children list
+        for child in children:
+            #prevent duplicate entries in the children list
+            if self.uid not in child.parents:
+                child.parents.append(self.uid)
+        self.children.extend(child.uid for child in children)
 
-    def add_children(self, children: list['person_profile']):
-        self.children.extend(children)
+    def set_parents(self, parents: 'person_profile' | list['person_profile']):
+        if isinstance(parents, 'person_profile'):
+            parents = [parents]
+        if len(parents) > 2:
+            raise ValueError("A person can have at most two parents.")
+        for parent in parents:
+            #prevent duplicate entries in the parents list and add the current person's uid to each parent's children list
+            if parent.uid not in self.parents:
+                self.parents.append(parent.uid)
+                parent.children.append(self.uid)
 
-    def set_parents(self, parents: list['person_profile']):
-        self.parents = parents
 
     def set_name(self, name: str):
         self.name = name
@@ -74,16 +92,6 @@ class person_profile:
         if age < 0:
             raise ValueError("Age cannot be negative.")
         self.age = age
-
-    #def set_sex(self, sex: str):
-    #    if self.dna_profile.get("Amelogenin") is not None:
-    #        if self.dna_profile.get("Amelogenin") == ["X", "Y"] and sex != "M":
-    #            raise ValueError("Sex does not match Amelogenin locus. Expected 'M' for ['X', 'Y'].")
-    #        elif self.dna_profile.get("Amelogenin") == ["X", "X"] and sex != "F":
-    #            raise ValueError("Sex does not match Amelogenin locus. Expected 'F' for ['X', 'X'].")
-    #        self.sex = sex
-    #    else:
-    #        raise ValueError("Cannot set sex based on Amelogenin locus. Please ensure the Amelogenin locus is present in the DNA profile.")
 
     def set_dna_profile(self, dna_profile: dict[str, int | None]):
         self.dna_profile = dna_profile

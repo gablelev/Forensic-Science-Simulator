@@ -22,7 +22,7 @@ locus_names:
 - Amelogenin
 loci:
   CSF1PO:
-    alleles:
+    alleles: 
       '5':
         frequency: 3.90747e-05
         microvariant: false
