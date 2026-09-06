@@ -43,18 +43,18 @@ class dna_profile:
         self.profile["Amelogenin"] = chromosomes
 
 class person_profile:
-    def __init__(self, dna_profile: dna_profile = dna_profile(), parents: list['person_profile'] = [], siblings: list['person_profile'] = [], children: list['person_profile'] = [], name = None, age = None, sex = None):
+    def __init__(self, dna_profile: dna_profile = dna_profile(), parents: list['person_profile'] = None, siblings: list['person_profile'] = None, children: list['person_profile'] = None, name = None, age = None, sex = None, uid = None):
         self.dna_profile = dna_profile
-        self.parents = parents
-        self.siblings = siblings
-        self.children = children
+        self.parents = parents if parents is not None else []
+        self.siblings = siblings if siblings is not None else []
+        self.children = children if children is not None else []
         self.name = name
         self.sex = "M" if self.dna_profile.get_locus_data("Amelogenin") == ["X", "Y"] else "F" if self.dna_profile.get_locus_data("Amelogenin") == ["X", "X"] else None
         self.age = age
-        self.uid = str(uuid.uuid4())
+        self.uid = uid if uid is not None else str(uuid.uuid4())
 
-    def add_siblings(self, siblings: 'person_profile' | list['person_profile']):
-        if isinstance(siblings, 'person_profile'):
+    def add_siblings(self, siblings: 'person_profile | list[person_profile]'):
+        if isinstance(siblings, person_profile):
             siblings = [siblings]
         #add the current person's uid to each sibling's siblings list and add each sibling's uid to the current person's siblings list
         for sibling in siblings:
@@ -63,8 +63,8 @@ class person_profile:
                 sibling.siblings.append(self.uid)
         self.siblings.extend(sibling.uid for sibling in siblings)
 
-    def add_children(self, children: 'person_profile' | list['person_profile']):
-        if isinstance(children, 'person_profile'):
+    def add_children(self, children: 'person_profile | list[person_profile]'):
+        if isinstance(children, person_profile):
             children = [children]
         #add the current person's uid to each child's parents list and add each child's uid to the current person's children list
         for child in children:
@@ -73,8 +73,8 @@ class person_profile:
                 child.parents.append(self.uid)
         self.children.extend(child.uid for child in children)
 
-    def set_parents(self, parents: 'person_profile' | list['person_profile']):
-        if isinstance(parents, 'person_profile'):
+    def set_parents(self, parents: 'person_profile | list[person_profile]'):
+        if isinstance(parents, person_profile):
             parents = [parents]
         if len(parents) > 2:
             raise ValueError("A person can have at most two parents.")
@@ -112,13 +112,13 @@ class person_profile:
             existing_data['profiles'] = {}
 
         data = {
-            "dna_profile": self.dna_profile,
+            "dna_profile": self.dna_profile.profile,
             "name": self.name,
             "age": self.age,
             "sex": self.sex,
-            "parents": [parent.uid for parent in self.parents],
-            "siblings": [sibling.uid for sibling in self.siblings],
-            "children": [child.uid for child in self.children]
+            "parents": self.parents,
+            "siblings": self.siblings,
+            "children": self.children
         }
 
         existing_data['profiles'][self.uid] = data
@@ -131,12 +131,13 @@ class person_profile:
             print(f"{locus}: {alleles}")
 
     def print_full_profile(self):
+        print(f"UUID: {self.uid}")
         print(f"Name: {self.name}")
         print(f"Age: {self.age}")
         print(f"Sex: {self.sex}")
-        print(f"Parents: {[parent.uid for parent in self.parents]}")
-        print(f"Siblings: {[sibling.uid for sibling in self.siblings]}")
-        print(f"Children: {[child.uid for child in self.children]}")
+        print(f"Parents: {self.parents}")
+        print(f"Siblings: {self.siblings}")
+        print(f"Children: {self.children}")
         print("DNA Profile:")
         for locus, alleles in self.dna_profile.profile.items():
             print(f"    {locus}: {alleles}")
