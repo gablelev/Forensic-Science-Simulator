@@ -23,3 +23,32 @@ def get_person_profile_from_database(uuid: str) -> 'person_profile':
                 siblings=siblings,
                 children=children
             )
+
+def upload(person: 'person_profile'):
+    if os.path.exists("database.yaml"):
+        with open("database.yaml", "r") as file:
+            existing_data = yaml.safe_load(file) or {}
+    else:
+        existing_data = {}
+
+    if "profiles" not in existing_data:
+        existing_data['profiles'] = {}
+
+    data = {
+        "dna_profile": person.dna_profile.profile,
+        "name": person.name,
+        "age": person.age,
+        "sex": person.sex,
+        "parents": person.parents,
+        "siblings": person.siblings,
+        "children": person.children
+    }
+
+    existing_data['profiles'][person.uid] = data
+
+    try:
+        with open("database.yaml", "w") as file:
+            yaml.safe_dump(existing_data, file)
+            print(f"Successfully uploaded {person.name} to database.yaml.")
+    except Exception as e:
+        print(f"Error writing to database.yaml: {e}")

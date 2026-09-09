@@ -101,31 +101,6 @@ class person_profile:
     def get_dna_profile(self) -> dict[str, int | None]:
         return self.dna_profile
 
-    def upload(self):
-        if os.path.exists("database.yaml"):
-            with open("database.yaml", "r") as file:
-                existing_data = yaml.safe_load(file) or {}
-        else:
-            existing_data = {}
-
-        if "profiles" not in existing_data:
-            existing_data['profiles'] = {}
-
-        data = {
-            "dna_profile": self.dna_profile.profile,
-            "name": self.name,
-            "age": self.age,
-            "sex": self.sex,
-            "parents": self.parents,
-            "siblings": self.siblings,
-            "children": self.children
-        }
-
-        existing_data['profiles'][self.uid] = data
-
-        with open("database.yaml", "w") as file:
-            yaml.safe_dump(existing_data, file)
-
     def print_dna_profile(self):
         for locus, alleles in self.dna_profile.items():
             print(f"{locus}: {alleles}")
