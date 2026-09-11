@@ -36,6 +36,7 @@ def upload(person: 'person_profile'):
 
     data = {
         "dna_profile": person.dna_profile.profile,
+        "dna_source": person.dna_profile.source,
         "name": person.name,
         "age": person.age,
         "sex": person.sex,
@@ -48,7 +49,7 @@ def upload(person: 'person_profile'):
 
     try:
         with open("database.yaml", "w") as file:
-            yaml.safe_dump(existing_data, file)
+            yaml.safe_dump(existing_data, file, sort_keys=False)
             print(f"Successfully uploaded {person.name} to database.yaml.")
     except Exception as e:
         print(f"Error writing to database.yaml: {e}")

@@ -1,0 +1,12 @@
+#valid sources for dna profiles
+sources:
+  - blood
+  - saliva
+  - buccal swab
+  - hair
+  - skin
+  - semen
+  - urine
+  - teeth
+  - bone
+  - other

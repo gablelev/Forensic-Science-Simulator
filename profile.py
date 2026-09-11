@@ -5,12 +5,19 @@ import os
 
 with open("loci.yaml", "r") as file:
     loci_data = yaml.safe_load(file)
-locus_names = loci_data["locus_names"]  
+locus_names = loci_data["locus_names"]
+
+with open("evidence.yaml", "r") as file:
+    evidence_data = yaml.safe_load(file)
+sources = evidence_data["sources"]
 
 class dna_profile:
     #creates an empty profile with all loci set to None by default or initializes with a provided profile dictionary
-    def __init__(self, profile: dict[str, int | None] = {locus: None for locus in locus_names}):
+    def __init__(self, profile: dict[str, int | None] = {locus: None for locus in locus_names}, source: str = None):
         self.profile = profile
+        if source is not None and source not in sources:
+            raise ValueError(f"Invalid source '{source}'. Must be one of {sources}.")
+        self.source = source
 
     def set_profile(self, profile: dict[str, int | None]):
         self.profile = profile
@@ -36,7 +43,7 @@ class dna_profile:
             #this should not happen
             raise ValueError(f"MAJOR PROFILE ERROR: Locus '{locus}' not found in the profile.")
 
-    #updates gender of the dna profile, not the person profile
+    #updates gender of the dna profile
     def set_gender(self, chromosomes: list[str]):
         if set(chromosomes) != {"X", "Y"} and set(chromosomes) != {"X", "X"}:
             raise ValueError("Invalid chromosomes for Amelogenin locus. Must be ['X', 'Y'] or ['X', 'X'].")
@@ -113,6 +120,8 @@ class person_profile:
         print(f"Parents: {self.parents}")
         print(f"Siblings: {self.siblings}")
         print(f"Children: {self.children}")
+        print(f"DNA Profile Information:")
+        print(f"    Source: {self.dna_profile.source}")
         print("DNA Profile:")
         for locus, alleles in self.dna_profile.profile.items():
             print(f"    {locus}: {alleles}")

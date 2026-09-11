@@ -2,10 +2,15 @@ import random
 import yaml
 from profile import person_profile, dna_profile
 
+with open("loci.yaml", "r") as file:
+    loci_data = yaml.safe_load(file)
+
+with open("evidence.yaml", "r") as file:
+    evidence_data = yaml.safe_load(file)
+sources = evidence_data["sources"]
+
 #for testing purposes, generates a random profile with random alleles for each locus
 def random_dna_profile() -> dna_profile:
-    with open("loci.yaml", "r") as file:
-                loci_data = yaml.safe_load(file)
     profile = {}
     for locus, locus_data in loci_data["loci"].items():
         if locus == "Amelogenin":
@@ -20,7 +25,14 @@ def random_dna_profile() -> dna_profile:
             allele1, allele2 = random.choices(alleles, weights=frequencies, k=2)
             #sort the alleles in ascending order for consistency
             profile[locus] = sorted([allele1, allele2], key=float)
-    return dna_profile(profile)
+    
+    #ensure a female profile does not have semen as a dna source
+    if profile["Amelogenin"] == ["X", "X"]:
+        exclude = "semen"
+        source = random.choice([s for s in sources if s != exclude])
+    else:
+        source = random.choice(sources)
+    return dna_profile(profile, source=source)
 
 #generate a child profile based on the DNA profiles of two parent profiles
 def generate_child_profile(parent1: 'person_profile', parent2: 'person_profile') -> dna_profile:
