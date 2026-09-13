@@ -74,7 +74,7 @@ def upload(person: 'person_profile'):
         existing_data['profiles'] = {}
 
     data = {
-        "dna_profile": person.dna_profile.profile,
+        "dna_profile": person.dna_profile.dna,
         "dna_source": person.dna_profile.source,
         "name": person.name,
         "age": person.age,

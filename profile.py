@@ -13,33 +13,37 @@ sources = evidence_data["sources"]
 
 #a case profile stores lists of evidence and lists of person profiles. evidence and person_profiles can store a dna profile
 
-#dna profile of a person or evidence, including alleles for each locus
+#dna profile of a person or evidence, including alleles for each locus - source points to an evidence id
 class dna_profile:
     #creates an empty profile with all loci set to None by default or initializes with a provided profile dictionary
-    def __init__(self, dna_profile: dict[str, int | None] = {locus: None for locus in locus_names}, source: str = None):
-        self.dna_profile = dna_profile
-        if source is not None and source not in sources:
-            raise ValueError(f"Invalid source '{source}'. Must be one of {sources}.")
+    def __init__(self, dna = None, source: str = None):
+        if dna is None:
+            dna = {
+                locus: [None, None]
+                for locus in locus_names
+            }
+        self.dna = dna
+        self.source = source
             
-    def set_profile(self, dna_profile: dict[str, int | None]):
-        self.dna_profile = profile
+    def set_profile(self, dna: dict[str, int | None]):
+        self.dna = profile
 
     #returns the alleles for a given locus, or [None, None] if the locus is not present in the profile
     def get_locus_data(self, locus: str) -> list[int | None]:
-        return self.dna_profile.get(locus, [None, None])
+        return self.dna.get(locus, [None, None])
 
     def set_locus(self, locus: str, alleles: list[int | float | str]):
         if locus == "Amelogenin":
             raise ValueError("Cannot edit Amelogenin locus using edit_locus method. Use edit_gender method instead.")
             
         locus_info = loci_data["loci"][locus]
-        if locus in self.dna_profile:
+        if locus in self.dna:
             sorted_alleles = sorted(alleles, key=float)
             allele1, allele2 = (str(allele) for allele in sorted_alleles)
             #organize alleles in descending order for consistency
             if allele1 not in locus_info["alleles"].keys():
                 raise ValueError(f"One or both alleles {alleles} are not valid for locus '{locus}'.")
-            self.dna_profile[locus] = [allele1, allele2]
+            self.dna[locus] = [allele1, allele2]
         else:
             #this should not happen
             raise ValueError(f"MAJOR PROFILE ERROR: Locus '{locus}' not found in the profile.")
@@ -48,12 +52,12 @@ class dna_profile:
     def set_gender(self, chromosomes: list[str]):
         if set(chromosomes) != {"X", "Y"} and set(chromosomes) != {"X", "X"}:
             raise ValueError("Invalid chromosomes for Amelogenin locus. Must be ['X', 'Y'] or ['X', 'X'].")
-        self.dna_profile["Amelogenin"] = chromosomes
+        self.dna["Amelogenin"] = chromosomes
 
 #a piece of evidence, such as a blood sample, hair sample, or other biological material, that can be used to generate a DNA profile
 class evidence:
-    def __init__(self, dna_profile: dict[str, int | None] = {locus: None for locus in locus_names}, source: str = None, person_source: str = None, date_collected: str = None):
-        self.dna_profile = dna_profile
+    def __init__(self, dna: dna_profile = None, source: str = None, person_source: str = None, date_collected: str = None):
+        self.dna_profile = dna
         if source is not None and source not in sources:
             raise ValueError(f"Invalid source '{source}'. Must be one of {sources}.")
         self.source = source
@@ -61,8 +65,8 @@ class evidence:
         self.date_collected = date_collected
         self.evidence_id = str(uuid.uuid4())
 
-    def set_dna_profile(self, dna_profile: dict[str, int | None]):
-        self.dna_profile = dna_profile
+    def set_dna_profile(self, dna: dna_profile):
+        self.dna_profile = dna
 
     def set_source(self, source: str):
         if source not in sources:
@@ -77,8 +81,11 @@ class evidence:
 
 #full profile of a person, including their dna profile and family relationships
 class person_profile:
-    def __init__(self, dna_profile: dna_profile = dna_profile(), parents: list['person_profile'] = None, siblings: list['person_profile'] = None, children: list['person_profile'] = None, name = None, age = None, sex = None, uid = None):
-        self.dna_profile = dna_profile
+    def __init__(self, dna: dna_profile = None, parents: list['person_profile'] = None, siblings: list['person_profile'] = None, children: list['person_profile'] = None, name = None, age = None, sex = None, uid = None):
+        #generate an empty dna profile if none is given
+        if dna is None:
+            dna = dna_profile()
+        self.dna_profile = dna
         self.parents = parents if parents is not None else []
         self.siblings = siblings if siblings is not None else []
         self.children = children if children is not None else []
@@ -135,7 +142,7 @@ class person_profile:
         return self.dna_profile
 
     def print_dna_profile(self):
-        for locus, alleles in self.dna_profile.items():
+        for locus, alleles in self.dna_profile.dna.items():
             print(f"{locus}: {alleles}")
 
     def print_full_profile(self):
@@ -149,7 +156,7 @@ class person_profile:
         print(f"DNA Profile Information:")
         print(f"    Source: {self.dna_profile.source}")
         print("DNA Profile:")
-        for locus, alleles in self.dna_profile.profile.items():
+        for locus, alleles in self.dna_profile.dna.items():
             print(f"    {locus}: {alleles}")
 
 #full profile of a case, including the case ID, list of evidence, list of suspects, and list of victims, along with related dna profiles and family relationships for each person
