@@ -10,3 +10,9 @@ sources:
   - teeth
   - bone
   - other
+
+#valid roles for dna profiles
+role: 
+  - suspect
+  - victim
+  - unidentified

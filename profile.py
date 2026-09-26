@@ -11,6 +11,15 @@ with open("evidence.yaml", "r") as file:
     evidence_data = yaml.safe_load(file)
 sources = evidence_data["sources"]
 
+#checks validity of a uuid
+def is_valid_uuid(value: str) -> bool:
+    try:
+        uuid.UUID(str(value))
+        return True
+    except ValueError:
+        return False
+
+
 #a case profile stores lists of evidence and lists of person profiles. evidence and person_profiles can store a dna profile
 
 #dna profile of a person or evidence, including alleles for each locus - source points to an evidence id
@@ -99,31 +108,54 @@ class person_profile:
             siblings = [siblings]
         #add the current person's uid to each sibling's siblings list and add each sibling's uid to the current person's siblings list
         for sibling in siblings:
-            #prevent duplicate entries in the siblings list
-            if self.uid not in sibling.siblings:
-                sibling.siblings.append(self.uid)
-        self.siblings.extend(sibling.uid for sibling in siblings)
+            try:
+                if self.uid == sibling.uid:
+                    raise Exception("Cannot make someone their own sibling. Cancelling...")
+
+                #prevent duplicate entries in the siblings list
+                if self.uid not in sibling.siblings:
+                    sibling.siblings.append(self.uid)
+                #add sibling's uid to their siblings list
+                if sibling.uid not in self.siblings:
+                    self.siblings.append(sibling.uid)
+            except Exception:
+                print("Cancelled adding someone as their own sibling.")
 
     def add_children(self, children: 'person_profile | list[person_profile]'):
         if isinstance(children, person_profile):
             children = [children]
         #add the current person's uid to each child's parents list and add each child's uid to the current person's children list
         for child in children:
-            #prevent duplicate entries in the children list
-            if self.uid not in child.parents:
-                child.parents.append(self.uid)
-        self.children.extend(child.uid for child in children)
+            try:
+                if self.uid == child.uid:
+                    raise Exception("Cannot make someone their own child. Cancelling...")
+                    
+                #prevent duplicate entries in the children list
+                if self.uid not in child.parents:
+                    child.parents.append(self.uid)
+                #add child's uid to their parent's children list
+                if child.uid not in self.uid:
+                    self.children.append(child.uid)
+            except Exception:
+                print("Cancelled adding someone as their own child.")
 
-    def set_parents(self, parents: 'person_profile | list[person_profile]'):
+    def add_parent(self, parents: 'person_profile | list[person_profile]'):
         if isinstance(parents, person_profile):
             parents = [parents]
         if len(parents) > 2:
             raise ValueError("A person can have at most two parents.")
         for parent in parents:
-            #prevent duplicate entries in the parents list and add the current person's uid to each parent's children list
-            if parent.uid not in self.parents:
-                self.parents.append(parent.uid)
-                parent.children.append(self.uid)
+            try:
+                if self.uid == parent.uid:
+                    raise Exception("Cannot make someone their own parent. Cancelling...")
+                #prevent duplicate entries in the parents list
+                if parent.uid not in self.parents:
+                    self.parents.append(parent.uid)
+                #add the current person's uid to each parent's children list
+                if self.uid not in parent.children:
+                    parent.children.append(self.uid)
+            except Exception:
+                print("Cancelled adding someone as their own parent.")
 
     def set_name(self, name: str):
         self.name = name
@@ -161,16 +193,74 @@ class person_profile:
 
 #full profile of a case, including the case ID, list of evidence, list of suspects, and list of victims, along with related dna profiles and family relationships for each person
 class case_profile:
-    def __init__(self, case_id: str = None, evidence_list: list['evidence'] = None, suspect_list: list['person_profile'] = None, victim_list: list['person_profile'] = None):
+    def __init__(self, case_id: str = None, evidence_list: list[str] = None, suspect_list: list[str] = None, victim_list: list[str] = None):
         self.case_id = case_id if case_id is not None else str(uuid.uuid4())
-        self.evidence_list = evidence_list
-        self.suspect_list = suspect_list
-        self.victim_list = victim_list
+        #suspect, victim, and evidence lists point to unique ids to avoid redundancy of data
+        self.evidence_list = evidence_list if evidence_list is not None else []
+        self.suspect_list = suspect_list if suspect_list is not None else []
+        self.victim_list = victim_list if victim_list is not None else []
+
+    def add_victim(self, victim: str or person_profile):
+        #if given argument is a person_profile, strip the unique id
+        if isinstance(victim, person_profile):
+            victim = victim.uid
+        #check validity of unique id
+        if is_valid_uuid(victim):
+            self.victim_list.append(victim)
+        else:
+            print(f"Victim ID either does not exist in profile or was given incorrectly.")
+
+    def add_suspect(self, suspect: person_profile):
+        suspect_id = suspect.uid
+        if is_valid_uuid(suspect_id):
+            self.suspect_list.append(suspect_id)
+        else:
+            print(f"Person profile contains an invalid unique ID: {suspect_id}")
+
+    def add_evidence(self, ev: str or evidence):
+        #if given argument is an evidence object, strip the unique id
+        if isinstance(ev, evidence):
+            ev = ev.evidence_id
+        #check validity of unique id
+        if is_valid_uuid(ev):
+            self.evidence_list.append(ev)
+        else:
+            print(f"Evidence ID either does not exist in evidence profile or was given incorrectly.")
 
     def print_evidence_list(self):
+        print(f"Evidence List:")
+        if self.evidence_list:
+            for evidence in self.evidence_list:
+                print(f"    Evidence ID: {evidence.evidence_id}")
+                print(f"    Person Source: {evidence.person_source}")
+                print(f"    Source: {evidence.source}")
+                print(f"    Date Collected: {evidence.date_collected}")
+        else:
+            print(f"    Empty")
+
+    def print_suspect_list(self):
+        print(f"Suspect List:")
+        index = 1
+        if self.suspect_list:
+            for person_id in self.suspect_list:
+                print(f"    Suspect {index} ID: {person_id}")
+                index += 1
+        else:
+            print(f"    Empty")
+
+    def print_victim_list(self):
+        print(f"Victim List:")
+        index = 1
+        if self.victim_list:
+            for person_id in self.victim_list:
+                print(f"    Victim {index} ID: {person_id}")
+                index += 1
+        else:
+            print(f"    Empty")
+
+    def print_full_case_profile(self):
         print(f"Case ID: {self.case_id}")
-        for evidence in evidence_list:
-            print(f"Evidence ID: {evidence.evidence_id}")
-            print(f"Person Source: {evidence.person_source}")
-            print(f"Source: {evidence.source}")
-            print(f"Date Collected: {evidence.date_collected}")
+        self.print_evidence_list()
+        self.print_suspect_list()
+        self.print_victim_list()
+
