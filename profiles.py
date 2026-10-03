@@ -25,6 +25,7 @@ def is_valid_uuid(value: str) -> bool:
 #dna profile of a person or evidence, including alleles for each locus - source points to an evidence id
 class dna_profile:
     #creates an empty profile with all loci set to None by default or initializes with a provided profile dictionary
+    #with implementation of a gui, the initilization of a dna profile will only be done to make a blank profile
     def __init__(self, dna = None, source: str = None):
         if dna is None:
             dna = {
@@ -33,10 +34,7 @@ class dna_profile:
             }
         self.dna = dna
         self.source = source
-            
-    def set_profile(self, dna: dict[str, int | None]):
-        self.dna = profile
-
+        
     #returns the alleles for a given locus, or [None, None] if the locus is not present in the profile
     def get_locus_data(self, locus: str) -> list[int | None]:
         return self.dna.get(locus, [None, None])
@@ -44,7 +42,10 @@ class dna_profile:
     def set_locus(self, locus: str, alleles: list[int | float | str]):
         if locus == "Amelogenin":
             raise ValueError("Cannot edit Amelogenin locus using edit_locus method. Use edit_gender method instead.")
-            
+        
+        if locus not in locus_names:
+            raise KeyError(f"Locus '{locus}' is not a valid locus.")
+
         locus_info = loci_data["loci"][locus]
         if locus in self.dna:
             sorted_alleles = sorted(alleles, key=float)
@@ -56,6 +57,12 @@ class dna_profile:
         else:
             #this should not happen
             raise ValueError(f"MAJOR PROFILE ERROR: Locus '{locus}' not found in the profile.")
+
+    def set_source(self, source: str):
+        if source not in sources:
+            raise ValueError(f"Invalid source '{source}'. Must be one of {sources}.")
+        else:
+            self.source = source
 
     #updates gender of the dna profile
     def set_gender(self, chromosomes: list[str]):

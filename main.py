@@ -1,4 +1,4 @@
-from profile import person_profile, dna_profile
+from profiles import person_profile, dna_profile
 from generators import *
 from database import *
 from faker import Faker
