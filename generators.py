@@ -1,6 +1,6 @@
 import random
 import yaml
-from profile import person_profile, dna_profile
+from profiles import person_profile, dna_profile
 
 with open("loci.yaml", "r") as file:
     loci_data = yaml.safe_load(file)

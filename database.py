@@ -1,6 +1,6 @@
 import os
 import yaml
-from profile import person_profile, dna_profile, case_profile, evidence
+from profiles import person_profile, dna_profile, case_profile, evidence
 
 #return a person_profile from the database from their uuid
 #function built with intention to be used in the future for a GUI to search for profiles by uuid

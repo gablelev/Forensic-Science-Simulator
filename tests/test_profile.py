@@ -66,7 +66,8 @@ def test_create_person_profile():
     #person profile exists but is blank
     assert person is not None
     assert person.dna_profile is not None
-    assert person.parents == []
+    assert person.mother is None
+    assert person.father is None
     assert person.siblings == []
     assert person.children == []
     assert person.name is None
@@ -74,3 +75,53 @@ def test_create_person_profile():
     assert person.age is None
     assert person.uid is not None
 
+#test setting dna of person profile
+def test_person_profile_set_dna():
+    person = person_profile()
+    dna = dna_profile()
+    person.set_dna_profile(dna)
+    assert person.dna_profile == dna
+
+#test adding sibling to person profile
+def test_person_profile_add_siblings():
+    person = person_profile()
+    sibling = person_profile()
+    person.add_siblings(sibling)
+    assert person.siblings == [sibling.uid]
+
+#test adding a mother to person profile
+def test_person_profile_set_mother():
+    person = person_profile()
+    mother = person_profile()
+    person.set_mother(mother)
+    assert person.mother == mother.uid
+
+#test adding a father to person profile
+def test_person_profile_set_father():
+    person = person_profile()
+    father = person_profile()
+    person.set_father(father)
+    assert person.father == father.uid
+
+#test setting a mother with wrong sex
+def test_person_profile_set_mother_invalid():
+    person = person_profile()
+    mother = person_profile()
+    mother.sex = "M"
+    with pytest.raises(ValueError):
+        person.set_mother(mother)
+
+#test setting a father with wrong sex
+def test_person_profile_set_father_invalid():
+    person = person_profile()
+    father = person_profile()
+    father.sex = "F"
+    with pytest.raises(ValueError):
+        person.set_father(father)
+
+#test adding a child to person profile
+def test_person_profile_set_child():
+    person = person_profile()
+    child = person_profile()
+    person.add_children(child)
+    assert person.children == [child.uid]

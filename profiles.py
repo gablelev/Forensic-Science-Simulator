@@ -2,6 +2,7 @@ import uuid
 import random
 import yaml
 import os
+import warnings
 
 with open("loci.yaml", "r") as file:
     loci_data = yaml.safe_load(file)
@@ -96,13 +97,15 @@ class evidence:
         self.date_collected = date
 
 #full profile of a person, including their dna profile and family relationships
+#relationships are stored as UIDs
 class person_profile:
-    def __init__(self, dna: dna_profile = None, parents: list['person_profile'] = None, siblings: list['person_profile'] = None, children: list['person_profile'] = None, name = None, age = None, sex = None, uid = None):
+    def __init__(self, dna: dna_profile = None, mother: str = None, father: str = None, siblings: list[str] = None, children: list[str] = None, name = None, age = None, sex = None, uid = None):
         #generate an empty dna profile if none is given
         if dna is None:
             dna = dna_profile()
         self.dna_profile = dna
-        self.parents = parents if parents is not None else []
+        self.mother = mother
+        self.father = father
         self.siblings = siblings if siblings is not None else []
         self.children = children if children is not None else []
         self.name = name
@@ -111,13 +114,13 @@ class person_profile:
         self.uid = uid if uid is not None else str(uuid.uuid4())
 
     def add_siblings(self, siblings: 'person_profile | list[person_profile]'):
-        if isinstance(siblings, person_profile):
+        if not isinstance(siblings, list):
             siblings = [siblings]
         #add the current person's uid to each sibling's siblings list and add each sibling's uid to the current person's siblings list
         for sibling in siblings:
             try:
                 if self.uid == sibling.uid:
-                    raise Exception("Cannot make someone their own sibling. Cancelling...")
+                    raise ValueError("Cannot make someone their own sibling. Cancelling...")
 
                 #prevent duplicate entries in the siblings list
                 if self.uid not in sibling.siblings:
@@ -125,44 +128,102 @@ class person_profile:
                 #add sibling's uid to their siblings list
                 if sibling.uid not in self.siblings:
                     self.siblings.append(sibling.uid)
-            except Exception:
-                print("Cancelled adding someone as their own sibling.")
+            except ValueError as e:
+                print(f"Error: {e}")
 
+    #remove a sibling from the person profile
+    def remove_sibling(self, sibling: 'person_profile | list[person_profile]'):
+        if not isinstance(sibling, list):
+            sibling = [sibling]
+        for s in sibling:
+            if s.uid in self.siblings:
+                self.siblings.remove(s.uid)
+
+    #add a child to the person profile - self is the parent
     def add_children(self, children: 'person_profile | list[person_profile]'):
-        if isinstance(children, person_profile):
+        if not isinstance(children, list):
             children = [children]
         #add the current person's uid to each child's parents list and add each child's uid to the current person's children list
         for child in children:
             try:
                 if self.uid == child.uid:
-                    raise Exception("Cannot make someone their own child. Cancelling...")
-                    
-                #prevent duplicate entries in the children list
-                if self.uid not in child.parents:
-                    child.parents.append(self.uid)
-                #add child's uid to their parent's children list
-                if child.uid not in self.uid:
-                    self.children.append(child.uid)
-            except Exception:
-                print("Cancelled adding someone as their own child.")
+                    raise ValueError("Cannot make someone their own child. Cancelling...")
+                
+                #check if the parent is the mother or father and add them to the child's profile
+                if self.sex == "F":
+                    if self.uid != child.mother:
+                        child.mother = self.uid
+                if self.sex == "M":
+                    if self.uid != child.father:
+                        child.father = self.uid
 
-    def add_parent(self, parents: 'person_profile | list[person_profile]'):
-        if isinstance(parents, person_profile):
-            parents = [parents]
-        if len(parents) > 2:
-            raise ValueError("A person can have at most two parents.")
-        for parent in parents:
-            try:
-                if self.uid == parent.uid:
-                    raise Exception("Cannot make someone their own parent. Cancelling...")
-                #prevent duplicate entries in the parents list
-                if parent.uid not in self.parents:
-                    self.parents.append(parent.uid)
-                #add the current person's uid to each parent's children list
-                if self.uid not in parent.children:
-                    parent.children.append(self.uid)
-            except Exception:
-                print("Cancelled adding someone as their own parent.")
+                #add child's uid to their parent's children list
+                if child.uid not in self.children:
+                    self.children.append(child.uid)
+            except ValueError as e:
+                print(f"Error: {e}")
+
+    #remove a child from the person profile
+    def remove_children(self, child: 'person_profile | list[person_profile]'):
+        if not isinstance(child, list):
+            child = [child]
+        for c in child:
+            if c.uid in self.children:
+                self.children.remove(c.uid)
+
+    # def add_parent(self, parents: 'person_profile | list[person_profile]'):
+    #     if not isinstance(parents, list):
+    #         parents = [parents]
+    #     if len(parents) > 2:
+    #         raise ValueError("A person can have at most two parents.")
+    #     for parent in parents:
+    #         try:
+    #             if self.uid == parent.uid:
+    #                 raise ValueError("Cannot make someone their own parent. Cancelling...")
+    #             #prevent duplicate entries in the parents list
+    #             if parent.uid not in self.parents:
+    #                 self.parents.append(parent.uid)
+    #             #add the current person's uid to each parent's children list
+    #             if self.uid not in parent.children:
+    #                 parent.children.append(self.uid)
+    #         except ValueError as e:
+    #             print(f"Error: {e}")
+
+    #explicity add a mother to the person profile
+    def set_mother(self, mother: 'person_profile'):
+        if not isinstance(mother, person_profile):
+            raise TypeError("Expected a person_profile instance for mother.")
+        if self.uid == mother.uid:
+            raise ValueError("Cannot make someone their own mother. Cancelling...")
+        if mother.sex == "M":
+            raise ValueError("The provided profile is not a female.")
+        if mother.uid != self.mother:
+            self.mother = mother.uid
+        if self.uid not in mother.children:
+            mother.children.append(self.uid)
+
+    #explicitly add a father to the person profile
+    def set_father(self, father: 'person_profile'):
+        if not isinstance(father, person_profile):
+            raise TypeError("Expected a person_profile instance for father.")
+        if father.dna_profile is None:
+            warnings.warn("Father's DNA profile is not set.")
+        if father.sex == "F":
+            raise ValueError("The provided profile is not a male.")
+        if self.uid == father.uid:
+            raise ValueError("Cannot make someone their own father. Cancelling...")
+        if father.uid != self.father:
+            self.father = father.uid
+        if self.uid not in father.children:
+            father.children.append(self.uid)
+
+    #remove a parent from the person profile
+    def remove_parent(self, parent: 'person_profile | list[person_profile]'):
+        if not isinstance(parent, list):
+            parent = [parent]
+        for p in parent:
+            if p.uid in self.parents:
+                self.parents.remove(p.uid)
 
     def set_name(self, name: str):
         self.name = name
