@@ -2,6 +2,7 @@ import uuid
 import random
 import yaml
 import os
+import re
 import warnings
 
 with open("loci.yaml", "r") as file:
@@ -12,14 +13,37 @@ with open("evidence.yaml", "r") as file:
     evidence_data = yaml.safe_load(file)
 sources = evidence_data["sources"]
 
+def validate_name(name: str) -> str:
+    if not isinstance(name, str):
+        raise TypeError("Name must be a string.")
+    #removing leading and trailing whitespace
+    name = name.strip()
+    #detect invalid characters in the name
+    if not re.fullmatch(r"^[a-zA-Z\s\-]+$", name):
+        raise ValueError("Name contains invalid characters. Only letters, spaces, and hyphens are allowed.")
+    #capitalize the first letter of each word in the name
+    name = name.title()
+    return name
+
+#used to validate a user inputted age for a person profile - to be used before the age is converted to an integer
+def validate_age(age: str) -> int:
+    try:
+        age = int(age.strip())
+    except ValueError:
+        raise ValueError("Age must be a valid integer.")
+    if age < 0:
+        raise ValueError("Age cannot be negative.")
+    return age
+
 #checks validity of a uuid
 def is_valid_uuid(value: str) -> bool:
+    if not isinstance(value, str):
+        return False
     try:
         uuid.UUID(str(value))
         return True
     except ValueError:
         return False
-
 
 #a case profile stores lists of evidence and lists of person profiles. evidence and person_profiles can store a dna profile
 
@@ -38,9 +62,15 @@ class dna_profile:
         
     #returns the alleles for a given locus, or [None, None] if the locus is not present in the profile
     def get_locus_data(self, locus: str) -> list[int | None]:
+        if not isinstance(locus, str):
+            raise TypeError("Locus must be a string.")
         return self.dna.get(locus, [None, None])
 
     def set_locus(self, locus: str, alleles: list[int | float | str]):
+        if not isinstance(locus, str):
+            raise TypeError("Locus must be a string.")
+        if not isinstance(alleles, list) or len(alleles) != 2 or not all(isinstance(a, (int, float, str)) for a in alleles):
+            raise TypeError("Alleles must be a list of two integers, floats, or strings.")
         if locus == "Amelogenin":
             raise ValueError("Cannot edit Amelogenin locus using edit_locus method. Use edit_gender method instead.")
         
@@ -60,15 +90,23 @@ class dna_profile:
             raise ValueError(f"MAJOR PROFILE ERROR: Locus '{locus}' not found in the profile.")
 
     def set_source(self, source: str):
+        if not isinstance(source, str):
+            raise TypeError("Source must be a string.")
         if source not in sources:
             raise ValueError(f"Invalid source '{source}'. Must be one of {sources}.")
         else:
             self.source = source
 
-    #updates gender of the dna profile
+    #updates gender of the dna profile - overwrites the sex of the person profile if it is set
     def set_gender(self, chromosomes: list[str]):
+        if not isinstance(chromosomes, list) or len(chromosomes) != 2 or not all(isinstance(c, str) for c in chromosomes):
+            raise TypeError("Chromosomes must be a list of two strings.")
         if set(chromosomes) != {"X", "Y"} and set(chromosomes) != {"X", "X"}:
             raise ValueError("Invalid chromosomes for Amelogenin locus. Must be ['X', 'Y'] or ['X', 'X'].")
+        if set(chromosomes) == {"X", "Y"}:
+            self.sex = "M"
+        elif set(chromosomes) == {"X", "X"}:
+            self.sex = "F"
         self.dna["Amelogenin"] = chromosomes
 
 #a piece of evidence, such as a blood sample, hair sample, or other biological material, that can be used to generate a DNA profile
@@ -83,14 +121,24 @@ class evidence:
         self.evidence_id = str(uuid.uuid4())
 
     def set_dna_profile(self, dna: dna_profile):
+        if not isinstance(dna, dna_profile):
+            raise TypeError("Expected a dna_profile instance.")
         self.dna_profile = dna
 
+    #set the substance from which the evidence was collected
     def set_source(self, source: str):
+        if not isinstance(source, str):
+            raise TypeError("Source must be a string.")
         if source not in sources:
             raise ValueError(f"Invalid source '{source}'. Must be one of {sources}.")
         self.source = source
 
+    #set the unique id of the person from whom the evidence was collected
     def set_person_source(self, person_source: str):
+        if not isinstance(person_source, str):
+            raise TypeError("Person source must be a string representing a UUID.")
+        if not is_valid_uuid(person_source):
+            raise ValueError(f"Invalid person source '{person_source}'. Must be a valid UUID.")
         self.person_source = person_source
     
     def set_date_collected(self, date: str):
@@ -114,8 +162,10 @@ class person_profile:
         self.uid = uid if uid is not None else str(uuid.uuid4())
 
     def add_siblings(self, siblings: 'person_profile | list[person_profile]'):
-        if not isinstance(siblings, list):
+        if isinstance(siblings, person_profile):
             siblings = [siblings]
+        elif not isinstance(siblings, list) or not all(isinstance(s, person_profile) for s in siblings):
+            raise TypeError("Siblings must be a person_profile or a list of person_profiles.")
         #add the current person's uid to each sibling's siblings list and add each sibling's uid to the current person's siblings list
         for sibling in siblings:
             try:
@@ -133,16 +183,23 @@ class person_profile:
 
     #remove a sibling from the person profile
     def remove_sibling(self, sibling: 'person_profile | list[person_profile]'):
-        if not isinstance(sibling, list):
+        if isinstance(sibling, person_profile):
             sibling = [sibling]
+        elif not isinstance(sibling, list) or not all(isinstance(s, person_profile) for s in sibling):
+            raise TypeError("Sibling must be a person_profile or a list of person_profiles.")
+        #remove sibling from current person's siblings list and remove current person's uid from the sibling's sibling list
         for s in sibling:
             if s.uid in self.siblings:
                 self.siblings.remove(s.uid)
+            if self.uid in s.siblings:
+                s.siblings.remove(self.uid)
 
     #add a child to the person profile - self is the parent
     def add_children(self, children: 'person_profile | list[person_profile]'):
-        if not isinstance(children, list):
+        if isinstance(children, person_profile):
             children = [children]
+        elif not isinstance(children, list) or not all(isinstance(child, person_profile) for child in children):
+            raise TypeError("Children must be a person_profile or a list of person_profiles.")
         #add the current person's uid to each child's parents list and add each child's uid to the current person's children list
         for child in children:
             try:
@@ -164,30 +221,14 @@ class person_profile:
                 print(f"Error: {e}")
 
     #remove a child from the person profile
-    def remove_children(self, child: 'person_profile | list[person_profile]'):
-        if not isinstance(child, list):
-            child = [child]
-        for c in child:
+    def remove_children(self, children: 'person_profile | list[person_profile]'):
+        if isinstance(children, person_profile):
+            children = [children]
+        elif not isinstance(children, list) or not all(isinstance(c, person_profile) for c in children):
+            raise TypeError("Children must be a person_profile or a list of person_profiles.")
+        for c in children:
             if c.uid in self.children:
                 self.children.remove(c.uid)
-
-    # def add_parent(self, parents: 'person_profile | list[person_profile]'):
-    #     if not isinstance(parents, list):
-    #         parents = [parents]
-    #     if len(parents) > 2:
-    #         raise ValueError("A person can have at most two parents.")
-    #     for parent in parents:
-    #         try:
-    #             if self.uid == parent.uid:
-    #                 raise ValueError("Cannot make someone their own parent. Cancelling...")
-    #             #prevent duplicate entries in the parents list
-    #             if parent.uid not in self.parents:
-    #                 self.parents.append(parent.uid)
-    #             #add the current person's uid to each parent's children list
-    #             if self.uid not in parent.children:
-    #                 parent.children.append(self.uid)
-    #         except ValueError as e:
-    #             print(f"Error: {e}")
 
     #explicity add a mother to the person profile
     def set_mother(self, mother: 'person_profile'):
@@ -217,28 +258,53 @@ class person_profile:
         if self.uid not in father.children:
             father.children.append(self.uid)
 
-    #remove a parent from the person profile
-    def remove_parent(self, parent: 'person_profile | list[person_profile]'):
-        if not isinstance(parent, list):
-            parent = [parent]
-        for p in parent:
-            if p.uid in self.parents:
-                self.parents.remove(p.uid)
+    #remove a mother from the person profile
+    def remove_mother(self):
+        if self.mother is not None:
+            mother_uid = self.mother
+            self.mother = None
+            #remove the current person's uid from the mother's children list
+            mother_profile = get_person_profile_by_uid(mother_uid)
+            if mother_profile:
+                if self.uid in mother_profile.children:
+                    mother_profile.remove_children(self)
+            else:
+                raise ValueError(f"Mother with UID {mother_uid} not found in the database.")
 
+    #remove a father from the person profile
+    def remove_father(self):
+        if self.father is not None:
+            father_uid = self.father
+            self.father = None
+            #remove the current person's uid from the father's children list
+            father_profile = get_person_profile_by_uid(father_uid)
+            if father_profile:
+                if self.uid in father_profile.children:
+                    father_profile.remove_children(self)
+            else:
+                raise ValueError(f"Father with UID {father_uid} not found in the database.")
+
+    #sets name of the person profile - user input function, requires sanitization
     def set_name(self, name: str):
-        self.name = name
+        validated_name = validate_name(name)
+        self.name = validated_name
 
-    def set_age(self, age: int):
-        if age < 0:
-            raise ValueError("Age cannot be negative.")
-        self.age = age
+    #sets age of the person profile - user input function, requires sanitization
+    def set_age(self, age: str):
+        validated_age = validate_age(age)
+        self.age = validated_age
 
-    def set_dna_profile(self, dna_profile: dict[str, int | None]):
-        self.dna_profile = dna_profile
-        if dna_profile.get_locus_data("Amelogenin") is not None:
-            self.sex = "M" if dna_profile.get_locus_data("Amelogenin") == ["X", "Y"] else "F" if dna_profile.get_locus_data("Amelogenin") == ["X", "X"] else None
+    #sets the dna profile of a person profile
+    def set_dna_profile(self, dna: 'dna_profile'):
+        if not isinstance(dna, dna_profile):
+            raise TypeError("DNA profile must be an instance of dna_profile.")
+        self.dna_profile = dna
+        if dna.get_locus_data("Amelogenin") is not None:
+            self.sex = "M" if dna.get_locus_data("Amelogenin") == ["X", "Y"] else "F" if dna.get_locus_data("Amelogenin") == ["X", "X"] else None
 
-    def get_dna_profile(self) -> dict[str, int | None]:
+    def get_dna_profile(self) -> 'dna_profile':
+        if self.dna_profile is None:
+            raise ValueError("DNA profile is not set for this person.")
         return self.dna_profile
 
     def print_dna_profile(self):

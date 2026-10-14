@@ -1,6 +1,7 @@
 from profiles import person_profile, dna_profile, evidence
 import pytest
 import yaml
+import uuid
 
 with open("loci.yaml", "r") as file:
     loci_data = yaml.safe_load(file)
@@ -60,6 +61,38 @@ def test_create_evidence():
     assert test_evidence.evidence_id is not None
     assert test_evidence.dna_profile is None
 
+#test setting dna profile of evidence
+def test_evidence_set_dna_profile():
+    test_evidence = evidence()
+    dna = dna_profile()
+    test_evidence.set_dna_profile(dna)
+    assert test_evidence.dna_profile == dna
+
+#test setting source of evidence
+def test_evidence_set_source():
+    test_evidence = evidence()
+    test_evidence.set_source("blood")
+    assert test_evidence.source == "blood"
+
+#test setting person source of evidence
+def test_evidence_set_person_source():
+    test_evidence = evidence()
+    test_person_uid = str(uuid.uuid4())
+    test_evidence.set_person_source(test_person_uid)
+    assert test_evidence.person_source == test_person_uid
+
+#test setting person source of evidence to an invalid uuid should raise a ValueError
+def test_evidence_set_person_source_invalid():
+    test_evidence = evidence()
+    with pytest.raises(ValueError):
+        test_evidence.set_person_source("invalid_uuid")
+
+#test setting date collected of evidence
+def test_evidence_set_date_collected():
+    test_evidence = evidence()
+    test_evidence.set_date_collected("2023-01-01")
+    assert test_evidence.date_collected == "2023-01-01"
+
 #test creating a blank person profile
 def test_create_person_profile():
     person = person_profile()
@@ -88,11 +121,13 @@ def test_person_profile_add_siblings():
     sibling = person_profile()
     person.add_siblings(sibling)
     assert person.siblings == [sibling.uid]
+    assert sibling.siblings == [person.uid]
 
 #test adding a mother to person profile
 def test_person_profile_set_mother():
     person = person_profile()
     mother = person_profile()
+    mother.sex = "F"
     person.set_mother(mother)
     assert person.mother == mother.uid
 
@@ -100,6 +135,7 @@ def test_person_profile_set_mother():
 def test_person_profile_set_father():
     person = person_profile()
     father = person_profile()
+    father.sex = "M"
     person.set_father(father)
     assert person.father == father.uid
 
@@ -120,8 +156,17 @@ def test_person_profile_set_father_invalid():
         person.set_father(father)
 
 #test adding a child to person profile
-def test_person_profile_set_child():
+def test_person_profile_add_child():
     person = person_profile()
+    person.sex = "F"
     child = person_profile()
     person.add_children(child)
     assert person.children == [child.uid]
+    assert child.mother == person.uid
+
+#test adding a child to person profile with invalid type
+def test_person_profile_add_child_invalid():
+    person = person_profile()
+    with pytest.raises(TypeError):
+        person.add_children("invalid")
+    
