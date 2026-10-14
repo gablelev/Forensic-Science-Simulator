@@ -5,6 +5,9 @@ from profiles import person_profile, dna_profile, case_profile, evidence
 #return a person_profile from the database from their uuid
 #function built with intention to be used in the future for a GUI to search for profiles by uuid
 def get_profile_from_database_uuid(uuid: str) -> 'person_profile':
+    if not isinstance(uuid, str):
+        raise TypeError("UUID must be a string")
+
     if not is_valid_uuid(uuid):
         raise ValueError("Invalid UUID")
 
@@ -24,7 +27,8 @@ def get_profile_from_database_uuid(uuid: str) -> 'person_profile':
             name=person_data["name"],
             age=person_data["age"],
             sex=person_data["sex"],
-            parents=parents,
+            mother=person_data.get("mother"),
+            father=person_data.get("father"),
             siblings=siblings,
             children=children
         )
@@ -32,6 +36,9 @@ def get_profile_from_database_uuid(uuid: str) -> 'person_profile':
 #return a list of person_profiles from the database that match/include a given name
 #function built with intention to be used in the future for a GUI to search for profiles by name
 def get_profile_from_database_name(name: str) -> list['person_profile']:
+    if not isinstance(name, str):
+        raise TypeError("Name must be a string")
+
     profiles = []
     if os.path.exists("database.yaml"):
         with open("database.yaml", "r") as f:
@@ -49,7 +56,8 @@ def get_profile_from_database_name(name: str) -> list['person_profile']:
                 name=person_data["name"],
                 age=person_data["age"],
                 sex=person_data["sex"],
-                parents=parents,
+                mother=person_data.get("mother"),
+                father=person_data.get("father"),
                 siblings=siblings,
                 children=children
             ))
@@ -57,6 +65,8 @@ def get_profile_from_database_name(name: str) -> list['person_profile']:
 
 #uploads data to database - can accept person profiles, case profiles, or evidence as argument
 def upload(profile: person_profile or case_profile or evidence):
+    if not isinstance(profile, (person_profile, case_profile, evidence)):
+        raise TypeError("Profile must be an instance of person_profile, case_profile, or evidence.")
     if os.path.exists("database.yaml"):
         with open("database.yaml", "r") as file:
             existing_data = yaml.safe_load(file) or {}
@@ -87,7 +97,8 @@ def upload(profile: person_profile or case_profile or evidence):
             "name": profile.name,
             "age": profile.age,
             "sex": profile.sex,
-            "parents": profile.parents,
+            "mother": profile.mother,
+            "father": profile.father,
             "siblings": profile.siblings,
             "children": profile.children
         }

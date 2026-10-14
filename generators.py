@@ -36,6 +36,9 @@ def random_dna_profile() -> dna_profile:
 
 #generate a child profile based on the DNA profiles of two parent profiles
 def generate_child_profile(parent1: 'person_profile', parent2: 'person_profile') -> dna_profile:
+    if not isinstance(parent1, person_profile) or not isinstance(parent2, person_profile):
+        raise TypeError("Both parents must be instances of person_profile.")
+
     #check that both parents have valid Amelogenin loci
     if parent1.dna_profile.get_locus_data("Amelogenin") is None or parent2.dna_profile.get_locus_data("Amelogenin") is None:
         raise ValueError("Both parents must have the Amelogenin locus in their DNA profiles.")

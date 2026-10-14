@@ -316,7 +316,8 @@ class person_profile:
         print(f"Name: {self.name}")
         print(f"Age: {self.age}")
         print(f"Sex: {self.sex}")
-        print(f"Parents: {self.parents}")
+        print(f"Mother: {self.mother}")
+        print(f"Father: {self.father}")
         print(f"Siblings: {self.siblings}")
         print(f"Children: {self.children}")
         print(f"DNA Profile Information:")
@@ -335,6 +336,8 @@ class case_profile:
         self.victim_list = victim_list if victim_list is not None else []
 
     def add_victim(self, victim: str or person_profile):
+        if not isinstance(victim, (str, person_profile)):
+            raise TypeError("Victim must be a string (UUID) or a person_profile instance.")
         #if given argument is a person_profile, strip the unique id
         if isinstance(victim, person_profile):
             victim = victim.uid
@@ -344,14 +347,21 @@ class case_profile:
         else:
             print(f"Victim ID either does not exist in profile or was given incorrectly.")
 
-    def add_suspect(self, suspect: person_profile):
-        suspect_id = suspect.uid
-        if is_valid_uuid(suspect_id):
-            self.suspect_list.append(suspect_id)
+    def add_suspect(self, suspect: str or person_profile):
+        if not isinstance(suspect, (str, person_profile)):
+            raise TypeError("Suspect must be a string (UUID) or a person_profile instance.")
+        #if given argument is a person_profile, strip the unique id
+        if isinstance(suspect, person_profile):
+            suspect = suspect.uid
+        #check validity of unique id
+        if is_valid_uuid(suspect):
+            self.suspect_list.append(suspect)
         else:
-            print(f"Person profile contains an invalid unique ID: {suspect_id}")
+            print(f"Suspect ID either does not exist in profile or was given incorrectly.")
 
     def add_evidence(self, ev: str or evidence):
+        if not isinstance(ev, (str, evidence)):
+            raise TypeError("Evidence must be a string (UUID) or an evidence instance.")
         #if given argument is an evidence object, strip the unique id
         if isinstance(ev, evidence):
             ev = ev.evidence_id
